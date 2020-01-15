@@ -11,11 +11,17 @@ function pollForElement(elem, timeout, callback) {
     setTimeout(() => clearInterval(intervalPoll), timeout);
 }
 
+let css = '';
+function addCss(input) {
+    css += input;
+}
+
 // From https://stackoverflow.com/questions/15505225/inject-css-stylesheet-as-string-using-javascript
-function injectCss(css) {
+function injectCss() {
     var node = document.createElement('style');
     node.innerHTML = css;
     document.body.appendChild(node);
+    css = ''
 }
 
 pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
@@ -23,14 +29,26 @@ pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
 function getSelectors() {
     // beginObserve()
     const convoList = document.querySelector('[aria-label="Conversation List"]').children
+
+    const convoListElement = convoList[1]
+    const convoListElementSelector = convoListElement.classList[1]
+    addCss('.' + convoListElementSelector + '{ height: 36px }');
+
     const convoExample = convoList[1].firstElementChild.firstElementChild.firstElementChild
     console.log(convoExample)
-    const convoImageSelector = convoExample.firstElementChild.classList['0']
-    injectCss('.' + convoImageSelector + ' { display: none }');
+
+    const convoTitleText = convoExample.children[1].firstElementChild.firstElementChild
+    const convoTitleTextSelector = convoTitleText.classList[1]
+    addCss('.' + convoTitleTextSelector + '::before { content: "# " }');
+
+    const convoImageSelector = convoExample.firstElementChild.classList[0]
+    addCss('.' + convoImageSelector + '{ display: none }');
 
     const convoMessagePreview = convoExample.children[1].children[1]
-    const convoMessagePreviewSelector = convoMessagePreview.classList['1']
-    injectCss('.' + convoMessagePreviewSelector + ' { display: none }');
+    const convoMessagePreviewSelector = convoMessagePreview.classList[1]
+    addCss('.' + convoMessagePreviewSelector + '{ display: none }');
+
+    injectCss();
 }
 
 pollForElement('#message-dots', 5000, removeMessageRequests)
