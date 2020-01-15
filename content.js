@@ -11,23 +11,19 @@ function pollForElement(elem, timeout, callback) {
     setTimeout(() => clearInterval(intervalPoll), timeout);
 }
 
-const pollForConversationList = setInterval(() => {
-    const convoList = document.querySelector('[aria-label="Conversation List"]');
-    if (convoList){
-        clearInterval(pollForConversationList);
-        beginRestyle(convoList);
-    }
-}, 200)
+pollForElement('[aria-label="Conversation List"]', 5000, beginRestyle)
 
-function beginRestyle(convoList) {
-    const convoLink = convoList.firstElementChild
-    const convoLinkClasses = convoList.firstElementChild.classList['value']
-    
-    // Remove conversation images
-    const convoImage = convoList.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild
-    const convoImageClass = convoImage.classList['0']
-    const convoImages = document.querySelectorAll('.'+convoImageClass)
-    convoImages.forEach(node => node.parentNode.removeChild(node))
+function beginRestyle() {
+    const convoList = document.querySelector('[aria-label="Conversation List"]').children
+
+    Array.from(convoList).forEach(node => {
+        const convo = node.firstElementChild.firstElementChild.firstElementChild
+        //remove conversation picture
+        convo.removeChild(convo.firstElementChild)
+        //remove conversation preview
+        convo.firstElementChild.removeChild(convo.firstElementChild.children[1])
+    })
+
 }
 
 pollForElement('#message-dots', 5000, removeMessageRequests)
@@ -35,5 +31,4 @@ pollForElement('#message-dots', 5000, removeMessageRequests)
 function removeMessageRequests() {
     const conversations = document.querySelector('[aria-label="Conversations"]');
     conversations.removeChild(conversations.firstElementChild)
-    console.log('removed')
 }
