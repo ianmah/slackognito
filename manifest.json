@@ -3,10 +3,6 @@
     "version": "1.0",
     "description": "Build an Extension!",
     "permissions": ["storage"],
-    "background": {
-      "scripts": ["background.js"],
-      "persistent": false
-    },
     "page_action": {
       "default_icon": {
         "16": "images/get_started16.png",
