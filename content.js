@@ -27,7 +27,6 @@ function injectCss() {
 pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
 
 function getSelectors() {
-    // beginObserve()
     const convoList = document.querySelector('[aria-label="Conversation List"]').children
 
     const convoListElement = convoList[1]
@@ -47,6 +46,16 @@ function getSelectors() {
     const convoMessagePreview = convoExample.children[1].children[1]
     const convoMessagePreviewSelector = convoMessagePreview.classList[1]
     addCss('.' + convoMessagePreviewSelector + '{ display: none }');
+
+    const conversations = document.querySelector('[aria-label="Conversations"]');
+    const conversationSidebar = conversations.parentElement.parentElement.parentElement;
+    conversationSidebar.style['background-color'] = '#4F2F4C';
+
+    // highlighted conversations have aria-relevant="additions text"
+    const highlightedConversation = document.querySelectorAll('[aria-relevant="additions text"]');
+    // unread conversations have aria-live="polite"
+    const selectedConversation = Array.from(highlightedConversation).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
+    console.log(selectedConversation)
 
     injectCss();
 }
