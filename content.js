@@ -11,26 +11,26 @@ function pollForElement(elem, timeout, callback) {
     setTimeout(() => clearInterval(intervalPoll), timeout);
 }
 
+// From https://stackoverflow.com/questions/15505225/inject-css-stylesheet-as-string-using-javascript
+function injectCss(css) {
+    var node = document.createElement('style');
+    node.innerHTML = css;
+    document.body.appendChild(node);
+}
+
 pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
 
-let convoImageSelector;
-
 function getSelectors() {
-    beginObserve()
+    // beginObserve()
     const convoList = document.querySelector('[aria-label="Conversation List"]').children
     const convoExample = convoList[1].firstElementChild.firstElementChild.firstElementChild
+    console.log(convoExample)
+    const convoImageSelector = convoExample.firstElementChild.classList['0']
+    injectCss('.' + convoImageSelector + ' { display: none }');
 
-    convoImageSelector = convoExample.firstElementChild.classList
-    console.log(convoImageSelector)
-
-    Array.from(convoList).forEach(node => {
-        // const convo = node.firstElementChild.firstElementChild.firstElementChild
-        //remove conversation picture
-
-        //remove conversation preview
-        // convo.firstElementChild.removeChild(convo.firstElementChild.children[1])
-    })
-
+    const convoMessagePreview = convoExample.children[1].children[1]
+    const convoMessagePreviewSelector = convoMessagePreview.classList['1']
+    injectCss('.' + convoMessagePreviewSelector + ' { display: none }');
 }
 
 pollForElement('#message-dots', 5000, removeMessageRequests)
@@ -40,8 +40,8 @@ function removeMessageRequests() {
     conversations.removeChild(conversations.firstElementChild)
 }
 
-
-
+// From https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+// This function calls onMutation when new conversations are loaded in the DOM
 function beginObserve() {
     // Select the node that will be observed for mutations
     const targetNode = document.querySelector('[aria-label="Conversation List"]');
@@ -53,6 +53,7 @@ function beginObserve() {
     const onMutation = function(mutationsList, observer) {
         if (mutationsList[0].type === 'childList') {            
             console.log('Child nodes added or removed.');
+            // TODO: Process new conversations 
         }
     };
 
