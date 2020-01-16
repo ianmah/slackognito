@@ -38,7 +38,8 @@ function getSelectors() {
 
     const convoTitleText = convoExample.children[1].firstElementChild.firstElementChild
     const convoTitleTextSelector = convoTitleText.classList[1]
-    addCss('.' + convoTitleTextSelector + '::before { content: "# " }');
+    addCss('.' + convoTitleTextSelector + `::before { content: "# " }`);
+    addCss('.' + convoTitleTextSelector + ' { color: white }');
 
     const convoImageSelector = convoExample.firstElementChild.classList[0]
     addCss('.' + convoImageSelector + '{ display: none }');
@@ -49,13 +50,14 @@ function getSelectors() {
 
     const conversations = document.querySelector('[aria-label="Conversations"]');
     const conversationSidebar = conversations.parentElement.parentElement.parentElement;
-    conversationSidebar.style['background-color'] = '#4F2F4C';
+    conversationSidebar.style['background-color'] = '#4f2f4c';
 
     // highlighted conversations have aria-relevant="additions text"
     const highlightedConversation = document.querySelectorAll('[aria-relevant="additions text"]');
     // unread conversations have aria-live="polite"
     const selectedConversation = Array.from(highlightedConversation).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
-    console.log(selectedConversation)
+    const selectedConversationSelector = selectedConversation.classList[3];    
+    addCss('.' + selectedConversationSelector + '{ background-color: #8c5888 !important }');
 
     injectCss();
 }
