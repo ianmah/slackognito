@@ -316,12 +316,28 @@ function messages() {
             const otherMessage = Array.from(messagesElem.children).filter(message => {
                 return message.firstElementChild.children.length === 2
             })[0]
+            const otherMessageBody = otherMessage.firstElementChild.children[1]
+            // ie _41ud
+            const otherMessageBodySelector = otherMessageBody.classList[0]
+            console.log(otherMessageBodySelector)
             const messageSenderPhotoWrapper = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+            // ie _4ldz
             const messageSenderPhotoWrapperSelector = messageSenderPhotoWrapper.classList[0]
-            console.log(messageSenderPhotoWrapperSelector)
+            // the selector that sets absolute position and bottom: 2
+            const messageSenderPhotoWrapper2Selector = messageSenderPhotoWrapper.classList[1]
             const messageSenderPhoto = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+            // ie _4ld-
             const messageSenderPhotoSelector = messageSenderPhoto.classList[0]
             addCss(`
+                .${otherMessageBodySelector} h5 {
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: ${darkGreyColor};
+                }
+                .${messageSenderPhotoWrapper2Selector} {
+                    bottom: inherit;
+                    top: 22px;
+                }
                 .${messageSenderPhotoWrapperSelector} {
                     height: ${messageSenderPhotoSize} !important;
                     width: ${messageSenderPhotoSize} !important;
@@ -345,13 +361,20 @@ function messages() {
 
             const myMessageExample = myMessage.firstElementChild.firstElementChild.children[1]
             // the one unique class that makes the message float right
+            // ie _3i_m
             const myBubbleSelector = myMessageExample.classList[3]
             const myMessageExampleText = myMessage.firstElementChild.firstElementChild.children[1].firstElementChild
+            // ie _3058
             const myMessageExampleTextSelector = myMessageExampleText.classList[0]
+            // ie _hh7
             const messageTextSelector = myMessageExampleText.classList[2]
             addCss(`
                 .${myBubbleSelector} .${myMessageExampleTextSelector} {
                     float: left !important;
+                }
+                .${myMessageExampleTextSelector} {
+                    padding: 1px 12px !important;
+                    margin: 0 !important;
                 }
                 .${messageTextSelector} {
                     background-color: transparent !important;
