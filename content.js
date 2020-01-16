@@ -136,6 +136,7 @@ function sidepanel() {
             color: #ffffff;
         }
         .yourName {
+            font-size: 15px;
             padding-top: 2px;
             color: #ffffff88;
             margin: 0;
@@ -241,7 +242,7 @@ function mainpanel() {
         path {
             fill: white;
             stroke: #1d1c1d70;
-            stroke-width: 2px;
+            stroke-width: 1px;
         }
     `)
 
@@ -271,6 +272,26 @@ function mainpanel() {
             injectCss();
         }
     }, 500)
+
+    const newMessage = document.querySelector('[aria-label="New message"]').firstElementChild
+    const newMessageSelector = newMessage.classList['value'].replace(' ','.')
+    addCss(`
+        .${newMessageSelector} {
+            margin: 0 20px 20px 20px;
+            border: 1px solid #1c1c1c;
+            border-radius: 5px;
+        }
+    `);
+    newMessage.removeChild(newMessage.firstElementChild)
+    newMessage.removeChild(newMessage.firstElementChild)
+    const newMessageBox = newMessage.children[1]
+    const newMessageBoxSelector = newMessageBox.classList[0]
+    addCss(`
+        .${newMessageBoxSelector} {
+            background-color: white;
+        }
+    `);
+    injectCss();
     
 }
 
