@@ -1,8 +1,5 @@
 console.log("Hello from your Messlackenger!")
 
-addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
-addCss(`body{ font-family: 'Lato' !important }`);
-
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
         const element = document.querySelector(elem);
@@ -27,22 +24,30 @@ function injectCss() {
     css = ''
 }
 
+addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
+addCss(`body{ font-family: 'Lato' !important }`);
+
 pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
 
 function getSelectors() {
+
+    const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
+    leftPanel.style['min-width'] = '230px'
+    leftPanel.style['max-width'] = '230px'
+
     const convoList = document.querySelector('[aria-label="Conversation List"]').children
 
     const convoListElement = convoList[1]
     const convoListElementSelector = convoListElement.classList[1]
-    addCss('.' + convoListElementSelector + '{ height: 36px }');
+    addCss('.' + convoListElementSelector + '{ height: 28px }');
 
     const convoExample = convoList[1].firstElementChild.firstElementChild.firstElementChild
     console.log(convoExample)
 
     const convoTitleText = convoExample.children[1].firstElementChild.firstElementChild
     const convoTitleTextSelector = convoTitleText.classList[1]
-    addCss('.' + convoTitleTextSelector + `::before { content: "# " }`);
-    addCss('.' + convoTitleTextSelector + ' { color: white }');
+    addCss('.' + convoTitleTextSelector + `::before { content: "# "; padding-right: 2px }`);
+    addCss('.' + convoTitleTextSelector + ' { color: #ffffff88 }');
 
     const convoImageSelector = convoExample.firstElementChild.classList[0]
     addCss('.' + convoImageSelector + '{ display: none }');
@@ -60,7 +65,10 @@ function getSelectors() {
     // unread conversations have aria-live="polite"
     const selectedConversation = Array.from(highlightedConversation).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
     const selectedConversationSelector = selectedConversation.classList[3];    
-    addCss('.' + selectedConversationSelector + '{ background-color: #8c5888 !important }');
+    addCss('.' + selectedConversationSelector + `{
+        background-color: #8c5888 !important;
+        color: white;
+    }`);
 
     injectCss();
 }
