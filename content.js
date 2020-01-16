@@ -1,6 +1,7 @@
-console.log("Hello from your Messlackenger!")
+console.log("Slackenger loaded successfully")
 
 const headerFontSize = '18px'
+const darkGreyColor = '#1c1c1c'
 
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
@@ -29,7 +30,7 @@ function injectCss() {
 addCss(`@import url('https://fonts.googleapis.com/css?family=Lato:400,900&display=swap');`);
 addCss(`body{ font-family: 'Lato' !important }`);
 
-pollForElement('[aria-label="Conversation List"]', 500, sidepanel)
+pollForElement('[aria-label="Conversation List"]', 10000, sidepanel)
 
 function sidepanel() {
     const chatBanner = document.querySelector('[role="banner"]');
@@ -222,7 +223,7 @@ function sidepanel() {
     injectCss();
 }
 
-pollForElement('[role="main"]', 500, mainpanel)
+pollForElement('[role="main"]', 10000, mainpanel)
 
 function mainpanel() {
     const main = document.querySelector('[role="main"]');
@@ -278,13 +279,11 @@ function mainpanel() {
     addCss(`
         .${newMessageSelector} {
             margin: 0 20px 20px 20px;
-            border: 1px solid #1c1c1c;
+            border: 1px solid ${darkGreyColor};
             border-radius: 5px;
         }
     `);
-    newMessage.removeChild(newMessage.firstElementChild)
-    newMessage.removeChild(newMessage.firstElementChild)
-    const newMessageBox = newMessage.children[1]
+    const newMessageBox = newMessage.children[3]
     const newMessageBoxSelector = newMessageBox.classList[0]
     addCss(`
         .${newMessageBoxSelector} {
@@ -293,6 +292,47 @@ function mainpanel() {
     `);
     injectCss();
     
+}
+
+pollForElement('[aria-label="Messages"]', 10000, messages)
+function messages() {    
+    const messagesElem = document.querySelector('[aria-label="Messages"]').children[2]
+    // Find your sent messages aka float right bubbles
+    const pollForMyMessage = setInterval(() => {
+        console.log(messagesElem.children)
+
+        const myMessage = Array.from(messagesElem.children).filter(message => {
+            const someElement = message.firstElementChild.firstElementChild
+            if (someElement) {
+                if (someElement.firstElementChild)
+                    // Messages sent by yourself will have an h5 element
+                    return someElement.firstElementChild.nodeName === 'H5'
+            }
+        })[0]
+        if (myMessage) {
+            clearInterval(pollForMyMessage)
+            const myMessageExample = myMessage.firstElementChild.firstElementChild.children[1]
+            // the one unique one that makes the message float right
+            const myBubbleSelector = myMessageExample.classList[3]
+            const myMessageExampleText = myMessage.firstElementChild.firstElementChild.children[1].firstElementChild
+            const myMessageExampleTextSelector = myMessageExampleText.classList[0]
+            const messageTextSelector = myMessageExampleText.classList[2]
+            addCss(`
+                .${myBubbleSelector} .${myMessageExampleTextSelector} {
+                    float: left !important;
+                }
+                .${messageTextSelector} {
+                    background-color: transparent !important;
+                    color: ${darkGreyColor} !important;
+                }
+            `)
+            injectCss()
+        }
+    }, 1000);
+    // Array.from(messagesElem.children).forEach(message => {
+    //     console.log(message.firstElementChild.firstElementChild)
+    // })
+    injectCss();
 }
 
 // Message requests has a div with id message-dots
