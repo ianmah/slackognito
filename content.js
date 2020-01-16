@@ -1,5 +1,7 @@
 console.log("Hello from your Messlackenger!")
 
+const headerFontSize = '18px'
+
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
         const element = document.querySelector(elem);
@@ -24,7 +26,7 @@ function injectCss() {
     css = ''
 }
 
-addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
+addCss(`@import url('https://fonts.googleapis.com/css?family=Lato:400,900&display=swap');`);
 addCss(`body{ font-family: 'Lato' !important }`);
 
 pollForElement('[aria-label="Conversation List"]', 500, sidepanel)
@@ -128,7 +130,7 @@ function sidepanel() {
             background-color: #00000022;
         }
         .workspaceTitle {
-            font-size: 18px;
+            font-size: ${headerFontSize};
             font-weight: bold;
             text-overflow: ellipsis;
             color: #ffffff;
@@ -234,9 +236,16 @@ function mainpanel() {
     // TODO: Modify icons to look like slack
     // addCss('.' + mainHeaderSelector + ' .' + mainHeaderCallIconsSelector + `{ display: none }`);
 
+    // Modify svg paths
+    addCss(`
+        path {
+            fill: white;
+            stroke: #1d1c1d70;
+            stroke-width: 2px;
+        }
+    `)
 
     const mainHeaderTitle = mainHeader.firstElementChild
-    console.log(mainHeaderTitle)
     // Photo takes a while to load so poll
     const mainHeaderPhotoPoll = setInterval(() => {
         if (mainHeaderTitle.children.length === 2) {
@@ -244,11 +253,24 @@ function mainpanel() {
             const mainHeaderPhoto = mainHeaderTitle.firstElementChild
             const mainHeaderPhotoSelector = mainHeaderPhoto.classList[0]
             addCss('.' + mainHeaderPhotoSelector + '{ display: none }');
+
+            // const mainHeaderTitleSubtext = mainHeaderTitle.children[2].firstElementChild
+            //TODO: Add icons and stuff to subtext
+            addCss(`
+                .${mainHeaderSelector} h2 {
+                    font-size: ${headerFontSize} !important;
+                    font-weight: 900 !important;
+                }
+                .${mainHeaderSelector} h2::before {
+                    content: "#";
+                    padding-right: 1px;
+                    font-size: 17px;
+                }
+            `);
+
+            injectCss();
         }
     }, 500)
-
-    
-    injectCss();
     
 }
 
