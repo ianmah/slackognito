@@ -66,16 +66,43 @@ function sidepanel() {
 
     let workspaceTitle = document.createElement('input')
     workspaceTitle.type = 'text'
-    workspaceTitle.value = 'Your Workspace Name'
+    workspaceTitle.value = 'Type here and press enter'
+    chrome.storage.local.get(["workspaceTitle"], (items) => {
+        if (items.workspaceTitle) {
+            workspaceTitle.value = items.workspaceTitle
+        }
+    })
     workspaceTitle.classList.add("workspaceTitle")
     workspaceTitle.classList.add("customInput")
-    // workspaceTitle.appendChild(document.createTextNode("Your Workspace Name"))
+    workspaceTitle.addEventListener('keyup', (e) => {
+        //enter key
+        if (e.keyCode === 13) {
+            chrome.storage.local.set({ "workspaceTitle": workspaceTitle.value }, () => {
+                // console.log('saved workspace title')
+            });
+            workspaceTitle.blur();
+        }
+    })
 
     let yourName = document.createElement('input')
     yourName.type = 'text'
-    yourName.value = 'Your Name'
+    yourName.value = 'Type here and press enter'
+    chrome.storage.local.get(["yourName"], (items) => {
+        if (items.yourName) {
+            yourName.value = items.yourName
+        }
+    })
     yourName.classList.add("yourName")
     yourName.classList.add("customInput")
+    yourName.addEventListener('keyup', (e) => {
+        //enter key
+        if (e.keyCode === 13) {
+            chrome.storage.local.set({ "yourName": yourName.value }, () => {
+                // console.log('saved your nane')
+            });
+            yourName.blur();
+        }
+    })
 
     const yourNameWrapper = document.createElement('span')
     yourNameWrapper.classList.add("yourNameWrapper")
