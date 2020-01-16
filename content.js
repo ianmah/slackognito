@@ -62,10 +62,37 @@ function sidepanel() {
     const conversationSidebar = conversations.parentElement.parentElement.parentElement;
     conversationSidebar.style['background-color'] = '#4f2f4c';
     
+    let myConvoBanner = document.createElement('div')
+    myConvoBanner.classList.add("myConvoBanner") 
+    let workspaceTitle = document.createElement('h1')
+    workspaceTitle.classList.add("workspaceTitle")
+    workspaceTitle.appendChild(document.createTextNode("Your Workspace Name"))
+    myConvoBanner.appendChild(workspaceTitle)
+    conversations.parentElement.insertBefore(myConvoBanner, conversations.parentElement.firstElementChild)
+    addCss(`
+        .myConvoBanner {
+            padding: 8px 16px;
+            height: 28px;
+            cursor: pointer;
+        }
+        .myConvoBanner:hover {
+            background-color: #00000022;
+        }
+        .workspaceTitle {
+            font-size: 18px;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            color: #ffffff;
+        }
+    `)
+    
     let myConvoPanel = document.createElement('div')
     myConvoPanel.classList.add("myConvoPanel") 
     let channelsLabel = document.createElement('p')
     channelsLabel.classList.add("channelsLabel")
+    channelsLabel.appendChild(document.createTextNode("Channels"))
+    myConvoPanel.appendChild(channelsLabel)
+    conversations.parentElement.insertBefore(myConvoPanel, conversations)
     addCss(`
         .myConvoPanel {
             height: 28px;
@@ -89,10 +116,6 @@ function sidepanel() {
             color: #ffffff88;
         }
     `)
-    channelsLabel.appendChild(document.createTextNode("Channels"))
-    myConvoPanel.appendChild(channelsLabel)
-    conversations.parentElement.insertBefore(myConvoPanel, conversations)
-
 
     // Poll for unread conversation (there may be no unread conversations on first load)
     const unreadConvoPoll = setInterval(() => {
