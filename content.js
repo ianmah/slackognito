@@ -27,7 +27,7 @@ function injectCss() {
 addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
 addCss(`body{ font-family: 'Lato' !important }`);
 
-pollForElement('[aria-label="Conversation List"]', 5000, sidepanel)
+pollForElement('[aria-label="Conversation List"]', 500, sidepanel)
 
 function sidepanel() {
     const chatBanner = document.querySelector('[role="banner"]');
@@ -217,6 +217,39 @@ function sidepanel() {
     }, 2000);
 
     injectCss();
+}
+
+pollForElement('[role="main"]', 500, mainpanel)
+
+function mainpanel() {
+    const main = document.querySelector('[role="main"]');
+
+    const mainHeader = main.getElementsByTagName('span')[0].firstElementChild
+    // ie _673w
+    const mainHeaderSelector = mainHeader.classList[0]
+    const mainHeaderCallIcons = mainHeader.children[1]
+    // ie _fl2 
+    const mainHeaderCallIconsSelector = mainHeaderCallIcons.classList[0]
+    // ie "._673w ._fl2"
+    // TODO: Modify icons to look like slack
+    // addCss('.' + mainHeaderSelector + ' .' + mainHeaderCallIconsSelector + `{ display: none }`);
+
+
+    const mainHeaderTitle = mainHeader.firstElementChild
+    console.log(mainHeaderTitle)
+    // Photo takes a while to load so poll
+    const mainHeaderPhotoPoll = setInterval(() => {
+        if (mainHeaderTitle.children.length === 2) {
+            clearInterval(mainHeaderPhotoPoll)
+            const mainHeaderPhoto = mainHeaderTitle.firstElementChild
+            const mainHeaderPhotoSelector = mainHeaderPhoto.classList[0]
+            addCss('.' + mainHeaderPhotoSelector + '{ display: none }');
+        }
+    }, 500)
+
+    
+    injectCss();
+    
 }
 
 // Message requests has a div with id message-dots
