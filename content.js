@@ -1,6 +1,7 @@
 console.log("Slackenger loaded successfully")
 
 const headerFontSize = '18px'
+const messageSenderPhotoSize = '36px'
 const darkGreyColor = '#1c1c1c'
 
 function pollForElement(elem, timeout, callback) {
@@ -299,7 +300,6 @@ function messages() {
     const messagesElem = document.querySelector('[aria-label="Messages"]').children[2]
     // Find your sent messages aka float right bubbles
     const pollForMyMessage = setInterval(() => {
-        console.log(messagesElem.children)
 
         const myMessage = Array.from(messagesElem.children).filter(message => {
             const someElement = message.firstElementChild.firstElementChild
@@ -309,10 +309,42 @@ function messages() {
                     return someElement.firstElementChild.nodeName === 'H5'
             }
         })[0]
+
         if (myMessage) {
             clearInterval(pollForMyMessage)
+
+            const otherMessage = Array.from(messagesElem.children).filter(message => {
+                return message.firstElementChild.children.length === 2
+            })[0]
+            const messageSenderPhotoWrapper = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+            const messageSenderPhotoWrapperSelector = messageSenderPhotoWrapper.classList[0]
+            console.log(messageSenderPhotoWrapperSelector)
+            const messageSenderPhoto = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild
+            const messageSenderPhotoSelector = messageSenderPhoto.classList[0]
+            addCss(`
+                .${messageSenderPhotoWrapperSelector} {
+                    height: ${messageSenderPhotoSize} !important;
+                    width: ${messageSenderPhotoSize} !important;
+                    max-height: ${messageSenderPhotoSize} !important;
+                    max-width: ${messageSenderPhotoSize} !important;
+                }
+                .${messageSenderPhotoSelector} {
+                    border-radius: 3px;
+                    max-height: ${messageSenderPhotoSize} !important;
+                    max-width: ${messageSenderPhotoSize} !important;
+                    height: ${messageSenderPhotoSize} !important;
+                    width: ${messageSenderPhotoSize} !important;
+                }
+                .${messageSenderPhotoSelector} img {
+                    min-height: ${messageSenderPhotoSize} !important;
+                    min-width: ${messageSenderPhotoSize} !important;
+                    height: ${messageSenderPhotoSize} !important;
+                    width: ${messageSenderPhotoSize} !important;
+                }
+            `)
+
             const myMessageExample = myMessage.firstElementChild.firstElementChild.children[1]
-            // the one unique one that makes the message float right
+            // the one unique class that makes the message float right
             const myBubbleSelector = myMessageExample.classList[3]
             const myMessageExampleText = myMessage.firstElementChild.firstElementChild.children[1].firstElementChild
             const myMessageExampleTextSelector = myMessageExampleText.classList[0]
@@ -329,18 +361,17 @@ function messages() {
             injectCss()
         }
     }, 1000);
-    // Array.from(messagesElem.children).forEach(message => {
-    //     console.log(message.firstElementChild.firstElementChild)
-    // })
+
     injectCss();
 }
 
 // Message requests has a div with id message-dots
-pollForElement('#message-dots', 5000, removeMessageRequests)
+pollForElement('#message-dots', 10000, removeMessageRequests)
 
 function removeMessageRequests() {
-    const conversations = document.querySelector('[aria-label="Conversations"]');
-    conversations.firstElementChild.style['display'] = 'none'
+    const messageDots = document.querySelector('#message-dots');
+    const messageRequests = messageDots.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
+    messageRequests.style['display'] = 'none'
 }
 
 // From https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
