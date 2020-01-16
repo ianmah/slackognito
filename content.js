@@ -1,5 +1,8 @@
 console.log("Hello from your Messlackenger!")
 
+addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
+addCss(`body{ font-family: 'Lato' !important }`);
+
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
         const element = document.querySelector(elem);

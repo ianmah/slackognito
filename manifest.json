@@ -17,7 +17,8 @@
       "48": "images/get_started48.png",
       "128": "images/get_started128.png"
     },
-    "manifest_version": 2,    
+    "manifest_version": 2,
+    "background": { "scripts": ["hot-reload.js"] },
     "content_scripts": [
         {
             "matches": ["https://www.messenger.com/*"],
