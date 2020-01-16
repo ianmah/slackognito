@@ -46,7 +46,7 @@ function getSelectors() {
 
     const convoTitleText = convoExample.children[1].firstElementChild.firstElementChild
     const convoTitleTextSelector = convoTitleText.classList[1]
-    addCss('.' + convoTitleTextSelector + `::before { content: "# "; padding-right: 2px }`);
+    addCss('.' + convoTitleTextSelector + `::before { content: "# "; color: #8a8a8a99; padding-right: 2px }`);
     addCss('.' + convoTitleTextSelector + ' { color: #ffffff88 }');
 
     const convoImageSelector = convoExample.firstElementChild.classList[0]
@@ -61,10 +61,18 @@ function getSelectors() {
     conversationSidebar.style['background-color'] = '#4f2f4c';
 
     // highlighted conversations have aria-relevant="additions text"
-    const highlightedConversation = document.querySelectorAll('[aria-relevant="additions text"]');
+    const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
+
     // unread conversations have aria-live="polite"
-    const selectedConversation = Array.from(highlightedConversation).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
-    const selectedConversationSelector = selectedConversation.classList[3];    
+    const unreadConversation = Array.from(highlightedConversations).filter(node => node.outerHTML.includes('aria-live="polite"'))[0]
+    const unreadConversationSelector = unreadConversation.classList[3];
+    const unreadConversationTitle = unreadConversation.firstElementChild.firstElementChild.firstElementChild.children[1].firstElementChild.firstElementChild
+    const unreadConversationTitleSelector = unreadConversationTitle.classList[0]
+    addCss('.' + unreadConversationSelector + ' .' + unreadConversationTitleSelector + `{ color: #ffffff; }`);
+
+    // unread conversations have aria-live="polite"
+    const selectedConversation = Array.from(highlightedConversations).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
+    const selectedConversationSelector = selectedConversation.classList[3];
     addCss('.' + selectedConversationSelector + `{
         background-color: #8c5888 !important;
         color: white;
