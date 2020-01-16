@@ -64,18 +64,35 @@ function sidepanel() {
     let myConvoBanner = document.createElement('div')
     myConvoBanner.classList.add("myConvoBanner")
 
-    let workspaceTitle = document.createElement('h1')
+    let workspaceTitle = document.createElement('input')
+    workspaceTitle.type = 'text'
+    workspaceTitle.value = 'Your Workspace Name'
     workspaceTitle.classList.add("workspaceTitle")
-    workspaceTitle.appendChild(document.createTextNode("Your Workspace Name"))
+    workspaceTitle.classList.add("customInput")
+    // workspaceTitle.appendChild(document.createTextNode("Your Workspace Name"))
 
-    let yourName = document.createElement('p')
+    let yourName = document.createElement('input')
+    yourName.type = 'text'
+    yourName.value = 'Your Name'
     yourName.classList.add("yourName")
-    yourName.appendChild(document.createTextNode("Your Name"))
+    yourName.classList.add("customInput")
+
+    const yourNameWrapper = document.createElement('span')
+    yourNameWrapper.classList.add("yourNameWrapper")
+    yourNameWrapper.appendChild(yourName)
 
     myConvoBanner.appendChild(workspaceTitle)
-    myConvoBanner.appendChild(yourName)
+    myConvoBanner.appendChild(yourNameWrapper)
     conversations.parentElement.insertBefore(myConvoBanner, conversations.parentElement.firstElementChild)
     addCss(`
+        .myConvoBanner input {
+            font-family: Lato;
+            border:none;
+            background-color:transparent;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+        }
         .myConvoBanner {
             padding: 8px 16px;
             cursor: pointer;
@@ -94,7 +111,7 @@ function sidepanel() {
             color: #ffffff88;
             margin: 0;
         }
-        .yourName::before {
+        .yourNameWrapper::before {
             padding-right: 7px;
             content: "●";
             color: #00FFB7;
