@@ -31,7 +31,6 @@ pollForElement('[aria-label="Conversation List"]', 5000, sidepanel)
 
 function sidepanel() {
     const chatBanner = document.querySelector('[role="banner"]');
-    console.log(chatBanner)
     chatBanner.style['display'] = 'none'
     
     const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
@@ -63,16 +62,22 @@ function sidepanel() {
     conversationSidebar.style['background-color'] = '#4f2f4c';
     
     let myConvoBanner = document.createElement('div')
-    myConvoBanner.classList.add("myConvoBanner") 
+    myConvoBanner.classList.add("myConvoBanner")
+
     let workspaceTitle = document.createElement('h1')
     workspaceTitle.classList.add("workspaceTitle")
     workspaceTitle.appendChild(document.createTextNode("Your Workspace Name"))
+
+    let yourName = document.createElement('p')
+    yourName.classList.add("yourName")
+    yourName.appendChild(document.createTextNode("Your Name"))
+
     myConvoBanner.appendChild(workspaceTitle)
+    myConvoBanner.appendChild(yourName)
     conversations.parentElement.insertBefore(myConvoBanner, conversations.parentElement.firstElementChild)
     addCss(`
         .myConvoBanner {
             padding: 8px 16px;
-            height: 28px;
             cursor: pointer;
         }
         .myConvoBanner:hover {
@@ -83,6 +88,16 @@ function sidepanel() {
             font-weight: bold;
             text-overflow: ellipsis;
             color: #ffffff;
+        }
+        .yourName {
+            padding-top: 2px;
+            color: #ffffff88;
+            margin: 0;
+        }
+        .yourName::before {
+            padding-right: 7px;
+            content: "●";
+            color: #00FFB7;
         }
     `)
     
@@ -110,7 +125,7 @@ function sidepanel() {
         }
         .channelsLabel::after {
             float: right;
-            content: "+";
+            content: "⨁";
             font-weight: bold;
             padding-right: 15px;
             color: #ffffff88;
