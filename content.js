@@ -62,12 +62,19 @@ function getSelectors() {
 
     // highlighted conversations have aria-relevant="additions text"
     const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
-
+    
     // unread conversations have aria-live="polite"
     const unreadConversation = Array.from(highlightedConversations).filter(node => node.outerHTML.includes('aria-live="polite"'))[0]
+    // unread circle badge notification
+    const unreadBadge = unreadConversation.children[1].firstElementChild
+    const unreadBadgeSelector = unreadBadge.classList[1]
+    addCss('.' + unreadBadgeSelector + '{ display: none }');
+    // ie _1ht3
     const unreadConversationSelector = unreadConversation.classList[3];
     const unreadConversationTitle = unreadConversation.firstElementChild.firstElementChild.firstElementChild.children[1].firstElementChild.firstElementChild
+    // ie _1ht6
     const unreadConversationTitleSelector = unreadConversationTitle.classList[0]
+    // ie "._1ht3 ._1ht6"
     addCss('.' + unreadConversationSelector + ' .' + unreadConversationTitleSelector + `{ color: #ffffff; }`);
 
     // unread conversations have aria-live="polite"
