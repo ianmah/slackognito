@@ -1,4 +1,4 @@
-# Slackenger Chrome Extension
+# Slackognito Chrome Extension
 
 Reskin Messenger to look like Slack
 
