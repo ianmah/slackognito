@@ -27,25 +27,24 @@ function injectCss() {
 addCss(`@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');`);
 addCss(`body{ font-family: 'Lato' !important }`);
 
-pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
+pollForElement('[aria-label="Conversation List"]', 5000, sidepanel)
 
-function getSelectors() {
+function sidepanel() {
     const chatBanner = document.querySelector('[role="banner"]');
     console.log(chatBanner)
     chatBanner.style['display'] = 'none'
-
+    
     const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
     leftPanel.style['min-width'] = '230px'
     leftPanel.style['max-width'] = '230px'
 
     const convoList = document.querySelector('[aria-label="Conversation List"]').children
-
     const convoListElement = convoList[1]
     const convoListElementSelector = convoListElement.classList[1]
     addCss('.' + convoListElementSelector + '{ height: 28px }');
 
     const convoExample = convoList[1].firstElementChild.firstElementChild.firstElementChild
-    console.log(convoExample)
+    // console.log(convoExample)
 
     const convoTitleText = convoExample.children[1].firstElementChild.firstElementChild
     const convoTitleTextSelector = convoTitleText.classList[1]
@@ -62,6 +61,37 @@ function getSelectors() {
     const conversations = document.querySelector('[aria-label="Conversations"]');
     const conversationSidebar = conversations.parentElement.parentElement.parentElement;
     conversationSidebar.style['background-color'] = '#4f2f4c';
+    
+    let myConvoPanel = document.createElement('div')
+    myConvoPanel.classList.add("myConvoPanel") 
+    let channelsLabel = document.createElement('p')
+    channelsLabel.classList.add("channelsLabel")
+    addCss(`
+        .myConvoPanel {
+            height: 28px;
+            cursor: pointer;
+        }
+        .channelsLabel {
+            font-weight: bold;
+            transition: color 0.1s linear;
+            margin: 0;
+            padding-left: 12px;
+            color: #ffffff88;
+        }
+        .channelsLabel:hover {
+            color: #ffffff;
+        }
+        .channelsLabel::after {
+            float: right;
+            content: "+";
+            font-weight: bold;
+            padding-right: 15px;
+            color: #ffffff88;
+        }
+    `)
+    channelsLabel.appendChild(document.createTextNode("Channels"))
+    myConvoPanel.appendChild(channelsLabel)
+    conversations.parentElement.insertBefore(myConvoPanel, conversations)
 
 
     // Poll for unread conversation (there may be no unread conversations on first load)
