@@ -296,7 +296,13 @@ function mainpanel() {
 }
 
 pollForElement('[aria-label="Messages"]', 10000, messages)
-function messages() {    
+function messages() {
+    const messagesSelector = document.querySelector('[aria-label="Messages"]').classList[0]
+    addCss(`
+        .${messagesSelector} {
+            padding-bottom: 10px;
+        }
+    `)
     const messagesElem = document.querySelector('[aria-label="Messages"]').children[2]
     // Find your sent messages aka float right bubbles
     const pollForMyMessage = setInterval(() => {
@@ -378,6 +384,7 @@ function messages() {
                 }
                 .${messageTextSelector} {
                     background-color: transparent !important;
+                    background-image: none !important;
                     color: ${darkGreyColor} !important;
                 }
             `)
