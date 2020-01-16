@@ -30,6 +30,9 @@ addCss(`body{ font-family: 'Lato' !important }`);
 pollForElement('[aria-label="Conversation List"]', 5000, getSelectors)
 
 function getSelectors() {
+    const chatBanner = document.querySelector('[role="banner"]');
+    console.log(chatBanner)
+    chatBanner.style['display'] = 'none'
 
     const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
     leftPanel.style['min-width'] = '230px'
@@ -60,39 +63,56 @@ function getSelectors() {
     const conversationSidebar = conversations.parentElement.parentElement.parentElement;
     conversationSidebar.style['background-color'] = '#4f2f4c';
 
-    // highlighted conversations have aria-relevant="additions text"
-    const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
-    
-    // unread conversations have aria-live="polite"
-    const unreadConversation = Array.from(highlightedConversations).filter(node => node.outerHTML.includes('aria-live="polite"'))[0]
-    // unread circle badge notification
-    const unreadBadge = unreadConversation.children[1].firstElementChild
-    const unreadBadgeSelector = unreadBadge.classList[1]
-    addCss('.' + unreadBadgeSelector + '{ display: none }');
-    // ie _1ht3
-    const unreadConversationSelector = unreadConversation.classList[3];
-    const unreadConversationTitle = unreadConversation.firstElementChild.firstElementChild.firstElementChild.children[1].firstElementChild.firstElementChild
-    // ie _1ht6
-    const unreadConversationTitleSelector = unreadConversationTitle.classList[0]
-    // ie "._1ht3 ._1ht6"
-    addCss('.' + unreadConversationSelector + ' .' + unreadConversationTitleSelector + `{ color: #ffffff; }`);
 
-    // unread conversations have aria-live="polite"
-    const selectedConversation = Array.from(highlightedConversations).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
-    const selectedConversationSelector = selectedConversation.classList[3];
-    addCss('.' + selectedConversationSelector + `{
-        background-color: #8c5888 !important;
-        color: white;
-    }`);
+    // Poll for unread conversation (there may be no unread conversations on first load)
+    const unreadConvoPoll = setInterval(() => {
+        // highlighted conversations have aria-relevant="additions text"
+        const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
+        // unread conversations have aria-live="polite"
+        const unreadConversation = Array.from(highlightedConversations).filter(node => node.outerHTML.includes('aria-live="polite"'))[0]
+        if (unreadConversation){
+            clearInterval(unreadConvoPoll);
+            // unread circle badge notification
+            const unreadBadge = unreadConversation.children[1].firstElementChild
+            const unreadBadgeSelector = unreadBadge.classList[1]
+            addCss('.' + unreadBadgeSelector + '{ display: none }');
+            // ie _1ht3
+            const unreadConversationSelector = unreadConversation.classList[3];
+            const unreadConversationTitle = unreadConversation.firstElementChild.firstElementChild.firstElementChild.children[1].firstElementChild.firstElementChild
+            // ie _1ht6
+            const unreadConversationTitleSelector = unreadConversationTitle.classList[0]
+            // ie "._1ht3 ._1ht6"
+            addCss('.' + unreadConversationSelector + ' .' + unreadConversationTitleSelector + `{ color: #ffffff; }`);
+            injectCss();
+        }
+    }, 2000);
+
+    // Poll for selected conversation (there may be no selected conversations on first load)
+    const selectedConvoPoll = setInterval(() => {
+        // highlighted conversations have aria-relevant="additions text"
+        const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
+        // unread conversations have aria-live="polite"
+        const selectedConvo = Array.from(highlightedConversations).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
+        if (selectedConvo){
+            clearInterval(selectedConvoPoll);
+            const selectedConvoSelector = selectedConvo.classList[3];
+            addCss('.' + selectedConvoSelector + `{
+                background-color: #8c5888 !important;
+                color: white;
+            }`);
+            injectCss();
+        }
+    }, 2000);
 
     injectCss();
 }
 
+// Message requests has a div with id message-dots
 pollForElement('#message-dots', 5000, removeMessageRequests)
 
 function removeMessageRequests() {
     const conversations = document.querySelector('[aria-label="Conversations"]');
-    conversations.removeChild(conversations.firstElementChild)
+    conversations.firstElementChild.style['display'] = 'none'
 }
 
 // From https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
