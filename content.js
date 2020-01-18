@@ -365,7 +365,12 @@ function messages() {
                 }
             `)
 
+
             const myMessageExample = myMessage.firstElementChild.firstElementChild.children[1]
+            const myMessageGroup = myMessage.firstElementChild.firstElementChild.firstElementChild
+            // this is a group of messages sent by the user
+            const myMessageGroupSelector = myMessageGroup.classList[0]
+            console.log(myMessageGroupSelector)
             // the one unique class that makes the message float right
             // ie _3i_m
             const myBubbleSelector = myMessageExample.classList[3]
@@ -375,6 +380,13 @@ function messages() {
             // ie _hh7
             const messageTextSelector = myMessageExampleText.classList[2]
             addCss(`
+                .${myMessageGroupSelector} {
+                    clip: inherit !important;
+                    height: inherit !important;
+                    width: inherit !important;
+                    position: inherit !important;
+                    white-space: nowrap;
+                }
                 .${myBubbleSelector} .${myMessageExampleTextSelector} {
                     float: left !important;
                 }
