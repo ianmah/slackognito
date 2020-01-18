@@ -2,8 +2,9 @@
     "name": "Slackognito",
     "version": "1.0",
     "description": "Messenger, but Slack",
-    "permissions": ["storage"],
+    "permissions": ["declarativeContent", "activeTab", "storage"],
     "page_action": {
+      "default_popup": "menu.html",
       "default_icon": {
         "16": "images/slackognito16.png",
         "32": "images/slackognito32.png",
@@ -18,12 +19,8 @@
       "128": "images/slackognito128.png"
     },
     "manifest_version": 2,
-    "background": { "scripts": ["hot-reload.js"] },
-    "content_scripts": [
-        {
-            "matches": ["https://www.messenger.com/*"],
-            "js": ["content.js"],
-            "css" : ["custom.css"]
-        }
-    ]
+    "background": {
+      "scripts": ["hot-reload.js"],
+      "persistent": false
+    }
   }
