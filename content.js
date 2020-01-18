@@ -71,7 +71,7 @@ function sidepanel() {
     let workspaceTitle = document.createElement('input')
     workspaceTitle.type = 'text'
     workspaceTitle.value = 'Type here and press enter'
-    chrome.storage.local.get(["workspaceTitle"], (items) => {
+    chrome.storage.sync.get(["workspaceTitle"], (items) => {
         if (items.workspaceTitle) {
             workspaceTitle.value = items.workspaceTitle
         }
@@ -81,7 +81,7 @@ function sidepanel() {
     workspaceTitle.addEventListener('keyup', (e) => {
         //enter key
         if (e.keyCode === 13) {
-            chrome.storage.local.set({ "workspaceTitle": workspaceTitle.value }, () => {
+            chrome.storage.sync.set({ "workspaceTitle": workspaceTitle.value }, () => {
                 // console.log('saved workspace title')
             });
             workspaceTitle.blur();
@@ -91,7 +91,7 @@ function sidepanel() {
     let yourName = document.createElement('input')
     yourName.type = 'text'
     yourName.value = 'Type here and press enter'
-    chrome.storage.local.get(["yourName"], (items) => {
+    chrome.storage.sync.get(["yourName"], (items) => {
         if (items.yourName) {
             yourName.value = items.yourName
         }
@@ -101,7 +101,7 @@ function sidepanel() {
     yourName.addEventListener('keyup', (e) => {
         //enter key
         if (e.keyCode === 13) {
-            chrome.storage.local.set({ "yourName": yourName.value }, () => {
+            chrome.storage.sync.set({ "yourName": yourName.value }, () => {
                 // console.log('saved your nane')
             });
             yourName.blur();
