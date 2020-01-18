@@ -3,6 +3,8 @@ console.log("Slackenger loaded successfully")
 const headerFontSize = '18px'
 const messageSenderPhotoSize = '36px'
 const darkGreyColor = '#1c1c1c'
+const lighterDarkGreyColor = '#1d1c1d'
+const lightGreyColor = '#e4e4e4'
 
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
@@ -297,10 +299,27 @@ function mainpanel() {
 
 pollForElement('[aria-label="Messages"]', 10000, messages)
 function messages() {
+    const infoPanelSelector = document.querySelector('[data-testid="info_panel"]').classList[0]
+    //TODO: Add a threads looking panel here
+    addCss(`.${infoPanelSelector} { display: none; }`)
+
     const messagesSelector = document.querySelector('[aria-label="Messages"]').classList[0]
     addCss(`
         .${messagesSelector} {
             padding-bottom: 10px;
+        }
+        .${messagesSelector} h4 {
+            margin: 32px;
+            width: 90%; 
+            border-bottom: 1px solid #000; 
+            border-color: ${lightGreyColor};
+            line-height: 0.1em;
+            font-weight: bold;
+            color: ${lighterDarkGreyColor};
+        }
+        .${messagesSelector} time {
+            padding: 8px 16px;
+            background: white;
         }
     `)
     const messagesElem = document.querySelector('[aria-label="Messages"]').children[2]
@@ -386,6 +405,7 @@ function messages() {
                     width: inherit !important;
                     position: inherit !important;
                     white-space: nowrap;
+                    opacity: 1 !important;
                 }
                 .${myBubbleSelector} .${myMessageExampleTextSelector} {
                     float: left !important;
