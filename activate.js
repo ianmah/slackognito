@@ -1,6 +1,6 @@
 function activate() {
     chrome.tabs.executeScript({
-        file: 'content.js'
+        file: 'inject.js'
     });
 }
 

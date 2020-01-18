@@ -19,8 +19,10 @@ The extension will reload when you save. You will need to reload your page to se
 - Custom themes
 - Dark theme toggle
 - sent videos go to left side
-- Hover chat room styling
+- Style sidebar hover
+- Add private message looking section of menu
 - Right/threads panel
 - Add subtext in main chat header
 - Personal profile picture in chat
 - Use slack icons
+- Resolve issue moving to old chat being scrolled too high
