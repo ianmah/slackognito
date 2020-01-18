@@ -38,6 +38,10 @@ pollForElement('[aria-label="Conversation List"]', 10000, sidepanel)
 function sidepanel() {
     const chatBanner = document.querySelector('[role="banner"]');
     chatBanner.style['display'] = 'none'
+
+    const sidePanelSelector = chatBanner.parentElement.classList[0]
+    addCss(`.${sidePanelSelector} { background-color: #4f2f4c }`);
+
     
     const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
     leftPanel.style['min-width'] = '230px'
@@ -353,7 +357,6 @@ function messages() {
 
             // ie _1t_p
             const messageGroupSelector = otherMessage.firstElementChild.classList[0]
-            console.log(messageGroupSelector)
             const messageSenderPhotoWrapper = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild
             // ie _4ldz
             const messageSenderPhotoWrapperSelector = messageSenderPhotoWrapper.classList[0]
