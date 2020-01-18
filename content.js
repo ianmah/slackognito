@@ -298,7 +298,11 @@ function mainpanel() {
 }
 
 pollForElement('[aria-label="Messages"]', 10000, messages)
-function messages() {
+function messages() {    
+    //ie _1wfr 
+    const messagesPanelSelector = document.querySelector('[role="presentation"]').firstElementChild.classList[1]
+    addCss(`.${messagesPanelSelector} { padding: 0; }`)    
+
     const infoPanelSelector = document.querySelector('[data-testid="info_panel"]').classList[0]
     //TODO: Add a threads looking panel here
     addCss(`.${infoPanelSelector} { display: none; }`)
@@ -341,29 +345,47 @@ function messages() {
             const otherMessage = Array.from(messagesElem.children).filter(message => {
                 return message.firstElementChild.children.length === 2
             })[0]
-            const otherMessageBody = otherMessage.firstElementChild.children[1]
-            // ie _41ud
-            const otherMessageBodySelector = otherMessageBody.classList[0]
-            console.log(otherMessageBodySelector)
+
+            // the random div on top of messages sent by other people
+            // ie _1t_q
+            const randomEmptySpaceSelector = otherMessage.firstElementChild.firstElementChild.classList[0]
+            addCss(`.${randomEmptySpaceSelector} { height: 0 }`)
+
+            // ie _1t_p
+            const messageGroupSelector = otherMessage.firstElementChild.classList[0]
+            console.log(messageGroupSelector)
             const messageSenderPhotoWrapper = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild
             // ie _4ldz
             const messageSenderPhotoWrapperSelector = messageSenderPhotoWrapper.classList[0]
             // the selector that sets absolute position and bottom: 2
+            // ie 
             const messageSenderPhotoWrapper2Selector = messageSenderPhotoWrapper.classList[1]
             const messageSenderPhoto = otherMessage.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild
             // ie _4ld-
             const messageSenderPhotoSelector = messageSenderPhoto.classList[0]
             addCss(`
-                .${otherMessageBodySelector} h5 {
+                .${messageGroupSelector} {
+                    padding: 6px 22px;
+                    margin-bottom: 0;
+                }
+                .${messageGroupSelector}:hover {
+                    background-color: #eeeeee88;
+                }
+                .${messageGroupSelector} h5 {
                     font-size: 15px;
                     font-weight: bold;
                     color: ${darkGreyColor};
+                    cursor: pointer;
+                }
+                .${messageGroupSelector} h5:hover {
+                    text-decoration: underline;
                 }
                 .${messageSenderPhotoWrapper2Selector} {
-                    bottom: inherit;
-                    top: 22px;
+                    bottom: inherit !important;
+                    top: 8px !important;
                 }
                 .${messageSenderPhotoWrapperSelector} {
+                    transform: none !important;
                     height: ${messageSenderPhotoSize} !important;
                     width: ${messageSenderPhotoSize} !important;
                     max-height: ${messageSenderPhotoSize} !important;
@@ -383,13 +405,11 @@ function messages() {
                     width: ${messageSenderPhotoSize} !important;
                 }
             `)
-
+            const myMessageGroup = myMessage.firstElementChild.firstElementChild.firstElementChild
+            // ie _ih3
+            const messageSenderSelector = myMessageGroup.classList[0]
 
             const myMessageExample = myMessage.firstElementChild.firstElementChild.children[1]
-            const myMessageGroup = myMessage.firstElementChild.firstElementChild.firstElementChild
-            // this is a group of messages sent by the user
-            const myMessageGroupSelector = myMessageGroup.classList[0]
-            console.log(myMessageGroupSelector)
             // the one unique class that makes the message float right
             // ie _3i_m
             const myBubbleSelector = myMessageExample.classList[3]
@@ -399,7 +419,7 @@ function messages() {
             // ie _hh7
             const messageTextSelector = myMessageExampleText.classList[2]
             addCss(`
-                .${myMessageGroupSelector} {
+                .${messageSenderSelector} {
                     clip: inherit !important;
                     height: inherit !important;
                     width: inherit !important;
