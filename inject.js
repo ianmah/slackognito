@@ -9,7 +9,7 @@ const lightGreyColor = '#e4e4e4'
 function pollForElement(elem, timeout, callback) {
     const intervalPoll = setInterval(() => {
         const element = document.querySelector(elem);
-        if (element){
+        if (element) {
             clearInterval(intervalPoll);
             callback();
         }
@@ -42,7 +42,7 @@ function sidepanel() {
     const sidePanelSelector = chatBanner.parentElement.classList[0]
     addCss(`.${sidePanelSelector} { background-color: #4f2f4c }`);
 
-    
+
     const leftPanel = document.body.children[1].firstElementChild.firstElementChild.firstElementChild
     leftPanel.style['min-width'] = '230px'
     leftPanel.style['max-width'] = '230px'
@@ -70,7 +70,7 @@ function sidepanel() {
     const conversations = document.querySelector('[aria-label="Conversations"]');
     const conversationSidebar = conversations.parentElement.parentElement.parentElement;
     conversationSidebar.style['background-color'] = '#4f2f4c';
-    
+
     let myConvoBanner = document.createElement('div')
     myConvoBanner.classList.add("myConvoBanner")
 
@@ -155,9 +155,9 @@ function sidepanel() {
             color: #00FFB7;
         }
     `)
-    
+
     let myConvoPanel = document.createElement('div')
-    myConvoPanel.classList.add("myConvoPanel") 
+    myConvoPanel.classList.add("myConvoPanel")
     let channelsLabel = document.createElement('p')
     channelsLabel.classList.add("channelsLabel")
     channelsLabel.appendChild(document.createTextNode("Channels"))
@@ -193,7 +193,7 @@ function sidepanel() {
         const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
         // unread conversations have aria-live="polite"
         const unreadConversation = Array.from(highlightedConversations).filter(node => node.outerHTML.includes('aria-live="polite"'))[0]
-        if (unreadConversation){
+        if (unreadConversation) {
             clearInterval(unreadConvoPoll);
             // unread circle badge notification
             const unreadBadge = unreadConversation.children[1].firstElementChild
@@ -216,7 +216,7 @@ function sidepanel() {
         const highlightedConversations = document.querySelectorAll('[aria-relevant="additions text"]');
         // unread conversations have aria-live="polite"
         const selectedConvo = Array.from(highlightedConversations).filter(node => !node.outerHTML.includes('aria-live="polite"'))[0]
-        if (selectedConvo){
+        if (selectedConvo) {
             clearInterval(selectedConvoPoll);
             const selectedConvoSelector = selectedConvo.classList[3];
             addCss('.' + selectedConvoSelector + `{
@@ -282,7 +282,7 @@ function mainpanel() {
     }, 500)
 
     const newMessage = document.querySelector('[aria-label="New message"]').firstElementChild
-    const newMessageSelector = newMessage.classList['value'].replace(' ','.')
+    const newMessageSelector = newMessage.classList['value'].replace(' ', '.')
     addCss(`
         .${newMessageSelector} {
             margin: 0 20px 20px 20px;
@@ -298,18 +298,21 @@ function mainpanel() {
         }
     `);
     injectCss();
-    
+
 }
 
 pollForElement('[aria-label="Messages"]', 10000, messages)
-function messages() {    
+function messages() {
     //ie _1wfr 
     const messagesPanelSelector = document.querySelector('[role="presentation"]').firstElementChild.classList[1]
-    addCss(`.${messagesPanelSelector} { padding: 0; }`)    
+    addCss(`.${messagesPanelSelector} { padding: 0; }`)
 
-    const infoPanelSelector = document.querySelector('[data-testid="info_panel"]').classList[0]
-    //TODO: Add a threads looking panel here
-    addCss(`.${infoPanelSelector} { display: none; }`)
+    const infoPanel = document.querySelector('[data-testid="info_panel"]')
+    if (infoPanel) {
+        const infoPanelSelector = infoPanel.classList
+        //TODO: Add a threads looking panel here
+        addCss(`.${infoPanelSelector} { display: none; }`)
+    }
 
     const messagesSelector = document.querySelector('[aria-label="Messages"]').classList[0]
     addCss(`
@@ -469,8 +472,8 @@ function beginObserve() {
     const config = { childList: true };
 
     // Callback function to execute when mutations are observed
-    const onMutation = function(mutationsList, observer) {
-        if (mutationsList[0].type === 'childList') {            
+    const onMutation = function (mutationsList, observer) {
+        if (mutationsList[0].type === 'childList') {
             console.log('Child nodes added or removed.');
             // TODO: Process new conversations 
         }
